@@ -1,0 +1,83 @@
+CASE STUDY
+AIM:
+The Hospital Management System Database allow us to keep record of patient, ward & doctor.
+It keep detail record of patient like : Date of admission & departure, Doctor Assign to patient.           And Problem of  patient.
+
+DESCRIPTION:
+Employee can save patient detail like name, number, date of admission and departure (exit)  etc  and can maintain a detail data of treatment that he/she receive in hospital. Detail data like what  disease or infection (cause of illness) that patient have and what is the way to cure it like which treatment will benefit the patient like treatment for fever is Rest and drink plenty of fluids and take proper medicine. After treatment it also keep record of bill that patient need to pay (doctor or hospital fees for there service).
+
+DESCRIPTION OF TABLES:
+1.	Ward : This table consists of all the ward available in hospital. Different Ward has Different doctor with is speciality in different illness.
+Constraint : w_id (ward id) is primary key.
+
+2.	Doctor : This table consists of all the doctor available in hospital. Different Doctor has speciality.
+Constraint : dr_id (Doctor  id) is primary key. dr_mail and dr_mobile is unique and dr_assign_ward is references key (reference to ward(w_id)).
+
+3.	Patient : This table consists of the data of patient with got treatment from hospital and with are going to get treatment in hospital. 
+Constraint : p_id (patient id) is primary key and has auto_increment, p_mail and p_mobile is unique, assign_dr is references key (to Doctor id (dr_id)) and p_date has default now().
+
+Tables and there columns:
+1.	Ward (w_id, w_name, w_details)
+2.	Doctor (dr_id, dr_name, dr_mail, dr_mobile, dr_speciality, dr_assign_ward)
+3.	Patient (p_id, p_name, p_mail, p_mobile, p_illness, p_treatment_medicine, p_date, p_edate, p_bill, p_bill_status, assign_dr )
+
+IMPLEMENTATION
+ 
+create table ward (
+w_id int primary key,
+w_name varchar(30),
+w_details varchar(30));
+
+create table doctor (
+dr_id int primary key,
+dr_name varchar(30),
+dr_mail varchar(30) unique,
+dr_mobile bigint unique,
+dr_speciality varchar(50),
+dr_assign_ward int,
+foreign key (dr_assign_ward) references ward(w_id)
+);
+
+create table patient (
+p_id int primary key auto_increment,
+p_name varchar(30) default 'NOT ENTERED',
+p_mail varchar(30) unique,
+p_mobile bigint unique,
+p_illness text,
+p_treatment_medicine text,
+p_date datetime default now(),
+p_edate datetime,
+p_bill double(15,2),
+p_bill_status varchar(20),
+assign_dr int,
+foreign key (assign_dr) references doctor(dr_id)
+);
+
+
+TO INSERT DATA IN WARD
+insert into ward values(
+    1,'E.N.T','ear, nose, and throat'),
+    (2,'cardiology ','Heart related illness'),
+    (3,'surgery','operation');
+
+To show data in ward:
+Select * from ward;
+
+TO INSERT DATA IN DOCTOR
+insert into doctor values(
+1,'luffy','luffy@gmail.com',9639639639,’ear nose throat’,1),
+ (2,'zoro','zoro@gmail.com',8528528528,’surgery’,3),
+ (3,'sanji','sanji@gmail.com',7417417417,’heart’,2);
+
+To show data in doctor:
+Select * from doctor;
+
+
+
+TO INSERT DATA IN PATIENT
+Insert into patient values(
+101,’patient1’,’patient1@gmail.com’,9632574155,’fever’,’treatment: rest medicine: Paracetamol’,now(),date_add(now(), interval 1 hour),500,’paid’,1), 
+(102,’patient2’,’patient2@gmail.com’,9656572155,’heart attack’,’treatment: admission to hospital for 5 days medicine: Beta-blockers’,now(),date_add(now(), interval 5 day),5000,’paid’,3);
+To show data in patient:
+Select * from patient;
+
